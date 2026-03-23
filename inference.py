@@ -13,7 +13,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 parser = argparse.ArgumentParser(description="PyTorch BasicIRSTD Inference without mask")
 parser.add_argument("--model_names", default=['ACM', 'ALCNet','DNANet', 'ISNet', 'RDIAN', 'ISTDU-Net'], nargs='+',  
                     help="model_name: 'ACM', 'ALCNet', 'DNANet', 'ISNet', 'UIUNet', 'RDIAN', 'ISTDU-Net', 'U-Net', 'RISTDnet'")
-parser.add_argument("--pth_dirs", default=None, nargs='+',  help="checkpoint dir, default=None or ['NUDT-SIRST/ACM_400.pth.tar','NUAA-SIRST/ACM_400.pth.tar']")
+parser.add_argument("--pth_dirs", default="./weights/IRSTD-1K/", nargs='+',  help="checkpoint dir, default=None or ['NUDT-SIRST/ACM_400.pth.tar','NUAA-SIRST/ACM_400.pth.tar']")
 parser.add_argument("--dataset_dir", default='./datasets', type=str, help="train_dataset_dir")
 parser.add_argument("--dataset_names", default=['NUAA-SIRST', 'NUDT-SIRST', 'IRSTD-1K'], nargs='+', 
                     help="dataset_name: 'NUAA-SIRST', 'NUDT-SIRST', 'IRSTD-1K', 'SIRST3', 'NUDT-SIRST-Sea'")
@@ -64,16 +64,17 @@ def test():
     print('Inference Done!')
    
 if __name__ == '__main__':
-    if opt.pth_dirs == None:
+    print(type("opt.pth_dirs"))
+    if opt.pth_dirs:
         for i in range(len(opt.model_names)):
             opt.model_name = opt.model_names[i]
-            print(opt.model_name)
             for dataset_name in opt.dataset_names:
                 opt.dataset_name = dataset_name
                 opt.train_dataset_name = opt.dataset_name
                 opt.test_dataset_name = opt.dataset_name
                 print(dataset_name)
-                opt.pth_dir = opt.save_log + opt.dataset_name + '/' + opt.model_name + '_400.pth.tar'
+                opt.pth_dir = opt.pth_dirs + opt.model_name + '_400.pth.tar'
+                print(opt.pth_dir)
                 test()
             print('\n')
     else:
